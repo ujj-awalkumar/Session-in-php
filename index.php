@@ -1,4 +1,33 @@
-<?php session_start(); ?>
+
+<?php
+session_start();
+$conn=mysqli_connect("localhost","root","","cimage");
+if(!$conn){
+    die("connection failed").mysqli_connect_error();
+}else{
+    if(!empty($_POST['email'])&&!empty($_POST['password'])){
+    $email=$_POST['email'];
+    $password=$_POST['password'];
+
+    $query="SELECT * FROM login WHERE Email='$email' and Password='$password'";
+    $rs=mysqli_query($conn,$query);
+    $row=mysqli_num_rows($rs);
+    if($row==1){
+        $_SESSION['Email']='ujjawalk.kumar@gmail.com';
+        $_SESSION['Id']='13381';
+        echo "Username and password matched";
+        header("Location:homepage.php");
+
+    }else{
+        //echo "Failed to login";
+        echo "<script>document.addEventListener('DOMContentLoaded', function(event) {
+            swal('Please enter correct username/password !');
+          });
+        </script>";
+    }
+}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,28 +54,7 @@
 </head>
 <body>
 
-<?php
-$conn=mysqli_connect("localhost","root","","cimage");
-if(!$conn){
-    die("connection failed").mysqli_connect_error();
-}else{
-    if(!empty($_POST['email'])&&!empty($_POST['password'])){
-    $email=$_POST['email'];
-    $password=$_POST['password'];
 
-    $query="SELECT * FROM login WHERE Email='$email' and Password='$password'";
-    $rs=mysqli_query($conn,$query);
-    $row=mysqli_num_rows($rs);
-    if($row==1){
-        $_SESSION['Email']='ujjawalk.kumar@gmail.com';
-        $_SESSION['Id']='13381';
-        echo "Username and password matched";
-        header("Location:homepage.php");
-
-    }
-}
-}
-?>
     <center>
         <form method="post">
             <table>
